@@ -15,6 +15,7 @@
 - [13. [Optional] Property `JSON Schema for Humans configuration file > markdown_options`](#markdown_options)
 - [14. [Optional] Property `JSON Schema for Humans configuration file > template_md_options`](#template_md_options)
   - [14.1. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > badge_as_image`](#template_md_options_badge_as_image)
+  - [14.2. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > toc_template_name`](#template_md_options_toc_template_name)
 
 **Title:** JSON Schema for Humans configuration file
 
@@ -222,10 +223,11 @@ Adding an extra, even if the value is false, will activate it. For example `{"br
 
 **Description:** specific options to md template
 
-| Property                                                 | Pattern | Type    | Deprecated | Definition | Title/Description                                                                    |
-| -------------------------------------------------------- | ------- | ------- | ---------- | ---------- | ------------------------------------------------------------------------------------ |
-| - [badge_as_image](#template_md_options_badge_as_image ) | No      | boolean | No         | -          | if true generate badges(eg: optional, required) using embedded image (https://im ... |
-|                                                          |         |         |            |            |                                                                                      |
+| Property                                                       | Pattern | Type             | Deprecated | Definition | Title/Description                                                                    |
+| -------------------------------------------------------------- | ------- | ---------------- | ---------- | ---------- | ------------------------------------------------------------------------------------ |
+| - [badge_as_image](#template_md_options_badge_as_image )       | No      | boolean          | No         | -          | if true generate badges(eg: optional, required) using embedded image (https://im ... |
+| - [toc_template_name](#template_md_options_toc_template_name ) | No      | enum (of string) | No         | -          | select the template to use for toc generation, set it to none to generate no toc ... |
+|                                                                |         |                  |            |            |                                                                                      |
 
 ### <a name="template_md_options_badge_as_image"></a>14.1. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > badge_as_image`
 
@@ -239,5 +241,21 @@ Adding an extra, even if the value is false, will activate it. For example `{"br
 
  if false, use text instead
 
+### <a name="template_md_options_toc_template_name"></a>14.2. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > toc_template_name`
+
+| Type                      | `enum (of string)`                                                        |
+| ------------------------- | ------------------------------------------------------------------------- |
+| **Additional properties** | [[Any type: allowed]](# "Additional Properties of any type are allowed.") |
+| **Default**               | `"classic"`                                                               |
+|                           |                                                                           |
+
+**Description:** select the template to use for toc generation, set it to none to generate no toc at all
+
+Must be one of:
+* "none"
+* "classic"
+* "table"
+* "summary"
+
 ----------------------------------------------------------------------------------------------------------------------------
-Generated using [json-schema-for-humans](https://github.com/coveooss/json-schema-for-humans) on 2021-02-16 at 20:11:33 +0100
+Generated using [json-schema-for-humans](https://github.com/coveooss/json-schema-for-humans) on 2021-03-03 at 19:41:07 +0100

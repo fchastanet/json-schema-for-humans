@@ -89,6 +89,12 @@
           "type": "boolean",
           "description": "if true generate badges(eg: optional, required) using embedded image (https://img.shields.io).\n\n if false, use text instead",
           "default": false
+        },
+        "toc_template_name": {
+          "type": "string",
+          "enum": ["none", "classic", "table", "summary"],
+          "description": "select the template to use for toc generation, set it to none to generate no toc at all",
+          "default": "classic"
         }
       }
     }
