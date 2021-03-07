@@ -1,0 +1,679 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://company.com/xapiEvent/1.0.0",
+  "title": "Event",
+  "description": "Event in xAPI format\nVersion of this schema is indicated in $id and uses the following rules, Given a version number MODEL.REVISION.ADDITION, increment the:\n * MODEL when you make a breaking schema change which will prevent interaction with any historical data\n * REVISION when you make a schema change which may prevent interaction with some historical data\n * ADDITION when you make a schema change that is compatible with all historical data\n\n[check here to see more examples](https://snowplowanalytics.com/blog/2014/05/13/introducing-schemaver-for-semantic-versioning-of-schemas/) we apply the same rules except we are using . instead of hyphen too separate the numbers\n",
+  "type": "object",
+  "definitions": {
+    "property.step": {
+      "description": "training session step",
+      "type": "number",
+      "examples": [
+        0
+      ],
+      "minimum": 0
+    },
+    "property.completion": {
+      "type": "object",
+      "properties": {
+        "completion": {
+          "description": "check if the learning resource is completed",
+          "type": "boolean",
+          "examples": [
+            true
+          ]
+        }
+      }
+    },
+    "property.duration": {
+      "type": "object",
+      "properties": {
+        "duration": {
+          "description": "duration of the learning resource",
+          "type": "string",
+          "pattern": "^PT[0-9]+S",
+          "examples": [
+            "PT300S"
+          ]
+        }
+      }
+    },
+    "property.score": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "raw value of the score",
+              "type": "integer",
+              "examples": [
+                4
+              ]
+            },
+            "min": {
+              "description": "min possible score",
+              "type": "integer",
+              "examples": [
+                0
+              ]
+            },
+            "max": {
+              "description": "max possible score",
+              "type": "integer",
+              "examples": [
+                5
+              ]
+            }
+          },
+          "required": [
+            "raw",
+            "min",
+            "max"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "score"
+      ],
+      "additionalProperties": false
+    },
+    "actor": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "description": "property is required when the Agent is in the ‘object’ of a statement",
+          "type": "string",
+          "enum": [
+            "Agent"
+          ]
+        },
+        "openid": {
+          "description": "unique identifier of an agent",
+          "type": "string",
+          "oneOf": [
+            {
+              "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/learners/(?<learnerGuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+            }
+          ],
+          "examples": [
+            "https://sample.company.com/xapi/instanceDbName/learners/E6018648-F538-3BF2-D5A6-61AF33E66061"
+          ]
+        }
+      },
+      "required": [
+        "objectType",
+        "openid"
+      ],
+      "additionalProperties": false
+    },
+    "verb": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Verb URL",
+          "type": "string",
+          "enum": [
+            "https://w3id.org/xapi/adl/verbs/logged-in",
+            "http://id.tincanapi.com/verb/earned",
+            "https://company.com/xapi/verbs/liked",
+            "https://company.com/xapi/verbs/favorited",
+            "http://id.tincanapi.com/verb/rated",
+            "https://company.com/xapi/verbs/searched",
+            "http://adlnet.gov/expapi/verbs/completed",
+            "http://adlnet.gov/expapi/verbs/launched"
+          ],
+          "format": "uri",
+          "examples": [
+            "http://adlnet.gov/expapi/verbs/launched"
+          ]
+        },
+        "display": {
+          "description": "description of the verb",
+          "type": "object",
+          "properties": {
+            "en-US": {
+              "type": "string",
+              "examples": [
+                "launched"
+              ]
+            }
+          },
+          "required": [
+            "en-US"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "display"
+      ],
+      "additionalProperties": false
+    },
+    "object": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "description": "property is required when the Agent is in the ‘object’ of a statement",
+          "type": "string",
+          "enum": [
+            "Activity"
+          ]
+        },
+        "id": {
+          "description": "ID of the object",
+          "$comment": "TODO lov guid is actually not a guid, should we change the /guid to something else ?",
+          "type": "string",
+          "oneOf": [
+            {
+              "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/login/.*$"
+            },
+            {
+              "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/path-session-item/[0-9]+/pre-assessment$"
+            },
+            {
+              "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/registration/(?<registrationGuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/post-assessment$"
+            },
+            {
+              "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/certificate/(?<certificateGuid>[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+            },
+            {
+              "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/forum-posts/[0-9]+$"
+            },
+            {
+              "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/learning-resources/[^/]+/guid/[^/]+$"
+            },
+            {
+              "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/search/.+$"
+            }
+          ],
+          "examples": [
+            "http://test.domain/xapi/instanceDbName/learning-resources/VDAM015/guid/EDAF7AC9-D062-0003-B5F8-ED5455AD5AB2"
+          ]
+        },
+        "definition": {
+          "$ref": "#/definitions/object.definition"
+        }
+      },
+      "required": [
+        "objectType",
+        "id",
+        "definition"
+      ],
+      "additionalProperties": false
+    },
+    "object.definition": {
+      "description": "Object definition",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Activity type",
+          "type": "string",
+          "enum": [
+            "https://company.com/xapi/activity-types/learning-resource",
+            "https://company.com/xapi/activity-types/al-questionnaire",
+            "https://company.com/xapi/activity-types/login",
+            "https://company.com/xapi/activity-types/certificate",
+            "https://company.com/xapi/activity-types/forum-post",
+            "https://company.com/xapi/activity-types/search"
+          ],
+          "format": "uri",
+          "examples": [
+            "https://company.com/xapi/activity-types/login"
+          ]
+        },
+        "name": {
+          "description": "Learning resource name",
+          "type": "object",
+          "$comment": "property en-US could be fr-FR following learner language",
+          "patternProperties": {
+            "(?<localeCode>^[a-z]{2,3}-[A-Z]{2,3}$)": {
+              "description": "learning resource title",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object",
+          "properties": {
+            "https://company.com/xapi/extensions/provider": {
+              "description": "lo provider",
+              "type": "string",
+              "examples": [
+                "company"
+              ]
+            }
+          },
+          "required": [
+            "https://company.com/xapi/extensions/provider"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "context": {
+      "type": "object",
+      "$comment": "TODO revision/registration mandatory in some cases, add all missing properties not required",
+      "properties": {
+        "registration": {
+          "description": "Registration UUID of the session",
+          "type": "string",
+          "pattern": "(?<registrationUUID>^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-8[0-9a-f]{3}-[0-9a-f]{12}$)",
+          "examples": [
+            "b0f78af6-7ad9-4726-8e02-d64c38bdd13f"
+          ]
+        },
+        "contextActivities": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/context.contextActivitiesTraining"
+            },
+            {
+              "$ref": "#/definitions/context.contextActivitiesLOV"
+            }
+          ]
+        },
+        "revision": {
+          "description": "revision of the learning resource",
+          "type": "string",
+          "pattern": "^[0-9]+$",
+          "examples": [
+            1
+          ]
+        },
+        "platform": {
+          "description": "identify the platform <origin>:<instanceBaseName> origin can be only PRODUCT for the moment but could be CKCONNECT, ... in the future\n",
+          "type": "string",
+          "pattern": "^(?<origin>PRODUCT):(?<instanceBaseName>[^:]+)$",
+          "examples": [
+            "PRODUCT:COMPANY"
+          ]
+        },
+        "language": {
+          "description": "language code of the training/session",
+          "type": "string",
+          "pattern": "(?<localeCode>^[a-z]{2,3}-[A-Z]{2,3}$)",
+          "examples": [
+            "es-ES"
+          ]
+        },
+        "extensions": {
+          "description": "extra information",
+          "$ref": "#/definitions/context.extensions"
+        }
+      },
+      "required": [
+        "platform",
+        "language",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "context.extensions": {
+      "type": "object",
+      "properties": {
+        "https://company.com/xapi/extensions/schemaVersion": {
+          "title": "schema version used",
+          "description": "Version of the schema that has been used during event generation",
+          "type": "string",
+          "pattern": "^[0-9]+(.[0-9]+)+$",
+          "examples": [
+            "1.0.0",
+            "2.5.0"
+          ],
+          "default": "1.0.0"
+        },
+        "https://company.com/xapi/extensions/schemaCompliance": {
+          "title": "schema compliance of this statement",
+          "description": "indicates if the event is compliant with this schema version, it could be false if statement generated by code does not validate but nevertheless sent",
+          "type": "boolean",
+          "default": true
+        },
+        "https://company.com/xapi/extensions/device": {
+          "description": "Device used",
+          "type": "string",
+          "enum": [
+            "mobile-webpage",
+            "desktop-webpage",
+            "mobile-app",
+            "server"
+          ],
+          "examples": [
+            "mobile-webpage"
+          ]
+        },
+        "https://company.com/xapi/extensions/launched-from": {
+          "description": "launched from",
+          "type": "string",
+          "enum": [
+            "PRODUCT"
+          ],
+          "examples": [
+            "PRODUCT"
+          ]
+        },
+        "https://company.com/xapi/extensions/dbname": {
+          "description": "database name",
+          "type": "string",
+          "examples": [
+            "DATABASE"
+          ]
+        },
+        "https://company.com/xapi/extensions/provider": {
+          "description": "lo provider",
+          "type": "string",
+          "examples": [
+            "company"
+          ]
+        },
+        "https://company.com/xapi/extensions/step": {
+          "$ref": "#/definitions/property.step"
+        }
+      },
+      "required": [
+        "https://company.com/xapi/extensions/schemaVersion",
+        "https://company.com/xapi/extensions/schemaCompliance",
+        "https://company.com/xapi/extensions/device",
+        "https://company.com/xapi/extensions/launched-from",
+        "https://company.com/xapi/extensions/dbname"
+      ],
+      "additionalProperties": false
+    },
+    "context.contextActivitiesTraining": {
+      "type": "object",
+      "properties": {
+        "parent": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "training session URL id",
+                "format": "uri",
+                "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/training-sessions/(?<trainingSessionGuid>[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12})$",
+                "examples": [
+                  "http://test.domain/xapi/instanceDbName/training-sessions/2F4D5B3B-9729-05A2-EB8A-418F4B7DDB7A"
+                ]
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "grouping": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "training course URL id",
+                "format": "uri",
+                "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/training-courses/(?<trainingGuid>[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12})$",
+                "examples": [
+                  "http://test.domain/instanceDbName/training-courses/2F4D5B3B-9729-05A2-EB8A-418F4B7DDB7A"
+                ]
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "parent",
+        "grouping"
+      ],
+      "additionalProperties": false
+    },
+    "context.contextActivitiesLOV": {
+      "type": "object",
+      "properties": {
+        "parent": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https?://[^/]+/xapi/(?<instanceDbName>[^/]+)/learning-resources/[^/]+/guid/[^/]+$",
+                "examples": [
+                  "http://test.domain/xapi/instanceDbName/learning-resources/VDAM015/guid/EDAF7AC9-D062-0003-B5F8-ED5455AD5AB2"
+                ]
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "parent"
+      ],
+      "not": {
+        "required": [
+          "grouping"
+        ]
+      },
+      "additionalProperties": false
+    },
+    "result": {
+      "title": "result of the verb on the object by the actor",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/result.score"
+        },
+        {
+          "$ref": "#/definitions/result.response"
+        },
+        {
+          "$ref": "#/definitions/result.completion_duration"
+        },
+        {
+          "$ref": "#/definitions/result.completion_score"
+        }
+      ]
+    },
+    "result.score": {
+      "title": "the raw score between min and max",
+      "description": "could be result of a vote, score of a learner on given learning object",
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "raw value of the score",
+              "type": "integer",
+              "examples": [
+                4
+              ]
+            },
+            "min": {
+              "description": "min possible score",
+              "type": "integer",
+              "examples": [
+                0
+              ]
+            },
+            "max": {
+              "description": "max possible score",
+              "type": "integer",
+              "examples": [
+                5
+              ]
+            }
+          },
+          "required": [
+            "raw",
+            "min",
+            "max"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "score"
+      ],
+      "additionalProperties": false
+    },
+    "result.response": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string",
+          "examples": [
+            "forum message"
+          ]
+        }
+      },
+      "required": [
+        "response"
+      ],
+      "additionalProperties": false
+    },
+    "result.completion_duration": {
+      "type": "object",
+      "properties": {
+        "duration": {
+          "description": "duration of the learning resource",
+          "type": "string",
+          "pattern": "^PT[0-9]+S",
+          "examples": [
+            "PT300S"
+          ]
+        },
+        "completion": {
+          "description": "check if the learning resource is completed",
+          "type": "boolean",
+          "examples": [
+            true
+          ]
+        }
+      },
+      "required": [
+        "duration",
+        "completion"
+      ],
+      "additionalProperties": false
+    },
+    "result.completion_score": {
+      "type": "object",
+      "properties": {
+        "completion": {
+          "description": "check if the learning resource is completed",
+          "type": "boolean",
+          "examples": [
+            true
+          ]
+        },
+        "score": {
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "raw value of the score",
+              "type": "integer",
+              "examples": [
+                4
+              ]
+            },
+            "min": {
+              "description": "min possible score",
+              "type": "integer",
+              "examples": [
+                0
+              ]
+            },
+            "max": {
+              "description": "max possible score",
+              "type": "integer",
+              "examples": [
+                5
+              ]
+            }
+          },
+          "required": [
+            "raw",
+            "min",
+            "max"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "score",
+        "completion"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "id": {
+      "description": "ID of the statement",
+      "$comment": "change pattern to [0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}",
+      "type": "string",
+      "pattern": "(?<eventUUID>^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$)",
+      "examples": [
+        "b0f78af6-7ad9-4726-9e02-d64c38bdd13f"
+      ]
+    },
+    "version": {
+      "description": "Version of the xApi specification used",
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)+$",
+      "default": "1.0.3"
+    },
+    "actor": {
+      "description": "Actor",
+      "$ref": "#/definitions/actor"
+    },
+    "verb": {
+      "description": "Verb",
+      "$ref": "#/definitions/verb"
+    },
+    "object": {
+      "description": "Object",
+      "$ref": "#/definitions/object"
+    },
+    "result": {
+      "description": "Result",
+      "$ref": "#/definitions/result"
+    },
+    "context": {
+      "description": "Context",
+      "$ref": "#/definitions/context"
+    },
+    "timestamp": {
+      "description": "date time of the event is generated",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "version",
+    "actor",
+    "verb",
+    "object",
+    "context",
+    "timestamp"
+  ],
+  "additionalProperties": false
+}

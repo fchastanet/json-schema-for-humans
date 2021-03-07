@@ -269,4 +269,4 @@ Must be one of:
 * "summary"
 
 ----------------------------------------------------------------------------------------------------------------------------
-Generated using [json-schema-for-humans](https://github.com/coveooss/json-schema-for-humans) on 2021-03-07 at 20:21:33 +0100
+Generated using [json-schema-for-humans](https://github.com/coveooss/json-schema-for-humans) on 2021-03-07 at 20:39:21 +0100
