@@ -11,11 +11,12 @@
 - [9. [Optional] Property `JSON Schema for Humans configuration file > default_from_description`](#default_from_description)
 - [10. [Optional] Property `JSON Schema for Humans configuration file > copy_css`](#copy_css)
 - [11. [Optional] Property `JSON Schema for Humans configuration file > copy_js`](#copy_js)
-- [12. [Optional] Property `JSON Schema for Humans configuration file > template_name`](#template_name)
-- [13. [Optional] Property `JSON Schema for Humans configuration file > markdown_options`](#markdown_options)
-- [14. [Optional] Property `JSON Schema for Humans configuration file > template_md_options`](#template_md_options)
-  - [14.1. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > badge_as_image`](#template_md_options_badge_as_image)
-  - [14.2. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > toc_template_name`](#template_md_options_toc_template_name)
+- [12. [Optional] Property `JSON Schema for Humans configuration file > templates_directory`](#templates_directory)
+- [13. [Optional] Property `JSON Schema for Humans configuration file > template_name`](#template_name)
+- [14. [Optional] Property `JSON Schema for Humans configuration file > markdown_options`](#markdown_options)
+- [15. [Optional] Property `JSON Schema for Humans configuration file > template_md_options`](#template_md_options)
+  - [15.1. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > badge_as_image`](#template_md_options_badge_as_image)
+  - [15.2. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > toc_template_name`](#template_md_options_toc_template_name)
 
 **Title:** JSON Schema for Humans configuration file
 
@@ -251,7 +252,7 @@ Adding an extra, even if the value is false, will activate it. For example `{"br
 
  if false, use text instead
 
-### <a name="template_md_options_toc_template_name"></a>14.2. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > toc_template_name`
+### <a name="template_md_options_toc_template_name"></a>15.2. [Optional] Property `JSON Schema for Humans configuration file > template_md_options > toc_template_name`
 
 | Type                      | `enum (of string)`                                                        |
 | ------------------------- | ------------------------------------------------------------------------- |
@@ -268,4 +269,4 @@ Must be one of:
 * "summary"
 
 ----------------------------------------------------------------------------------------------------------------------------
-Generated using [json-schema-for-humans](https://github.com/coveooss/json-schema-for-humans) on 2021-03-03 at 19:41:07 +0100
+Generated using [json-schema-for-humans](https://github.com/coveooss/json-schema-for-humans) on 2021-03-07 at 20:21:33 +0100
