@@ -4,8 +4,12 @@ import pytest
 from json_schema_for_humans.generate import GenerationConfiguration
 from tests.md_utils_asserts import MdUtilsAsserts
 
-configBadge = GenerationConfiguration(template_name="md", template_md_options={"badge_as_image": True})
-configNoBadge = GenerationConfiguration(template_name="md", template_md_options={"badge_as_image": False})
+configBadge = GenerationConfiguration(
+    template_name="md", template_md_options={"badge_as_image": True, "toc_template_name": "classic"}
+)
+configNoBadge = GenerationConfiguration(
+    template_name="md", template_md_options={"badge_as_image": False, "toc_template_name": "classic"}
+)
 testCases = []
 cases_source_dir = os.path.join(os.path.dirname(__file__), "cases")
 

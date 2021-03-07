@@ -26,7 +26,8 @@ without_badge_dir = os.path.join(os.path.dirname(__file__), "expected_md", "with
 os.makedirs(with_badge_dir, exist_ok=True)
 
 config_with_badge = GenerationConfiguration(template_name="md", template_md_options={"badge_as_image": True})
-config_without_badge = GenerationConfiguration(template_name="md", template_md_options={"badge_as_image": False})
+config_without_badge = GenerationConfiguration(template_name="md")
+
 for case_name in os.listdir(cases_source_dir):
     name, ext = os.path.splitext(case_name)
     case_source = os.path.abspath(os.path.join(cases_source_dir, case_name))

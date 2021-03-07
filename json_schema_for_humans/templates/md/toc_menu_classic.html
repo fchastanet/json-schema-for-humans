@@ -1,0 +1,3 @@
+{%- for item in toc %}
+{{ item.indent }}- [{{ item.heading_numbers }} {{ item.title }}](#{{ item.html_id }})
+{% endfor -%}
